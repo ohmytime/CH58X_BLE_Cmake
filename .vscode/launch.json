@@ -8,7 +8,7 @@
             "name": "WCH Debug OpenOCD",
             "cwd": "${workspaceFolder}",
             // 改成你自己的路径
-            "executable": "${workspaceFolder}/build/debug/ch58x-ble-ninja.elf",
+            "executable": "${workspaceFolder}/build/debug/ch58x-ble-uart.elf",
             "request": "launch",
             "type": "cortex-debug",
             "runToEntryPoint": "main",

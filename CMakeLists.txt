@@ -42,7 +42,7 @@ endif()
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
 # Step 2: 设置工程名称为"ch58x-ninja"
-set(TOP_PROJECT_NAME "ch58x-ble-ninja")
+set(TOP_PROJECT_NAME "ch58x-ble-uart")
 # 项目设置
 project(${TOP_PROJECT_NAME} C CXX ASM)
 set(CMAKE_CXX_STANDARD 11) # C++ 11
@@ -66,11 +66,9 @@ add_compile_options(-fmessage-length=0 -fsigned-char -ffunction-sections
 # 编译警告部分 参照：https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
 # 解释：https://tonybai.com/2006/03/14/explain-gcc-warning-options-by-examples/
 add_compile_options(
-  -w # 禁止所有警告
+  # -w # 禁止所有警告
   -Wall
-  -Wextra # 除-Wall外其它的警告
-  # -Werror
-  # -Wunused # 未使用警告
+  # -Wextra # 除-Wall外其它的警告 -Werror
   -Wfatal-errors # 出现第一个错误就停止编译
   -Wswitch-default # Switch 应该有一个默认的defalut
   # -Wcast-qual           # 被去掉cast限制警告
@@ -149,7 +147,8 @@ add_link_options(-T ${LINKER_SCRIPT})
 
 # ---------------------------- 链接标准库 ----------------------------
 # 用在add_executable之前
-link_libraries(m) # -lm  添加方法1
+
+# link_libraries(m)            # -lm  添加方法1
 
 # 编译可执行文件
 add_executable(${PROJECT_NAME}.elf ${SOURCES} ${LINKER_SCRIPT})
