@@ -5,12 +5,12 @@ cmake_minimum_required(VERSION 3.20)
 
 # Step 1: 工具链设置
 set(WCH_TOOL_CHAIN 1)
-if(WCH_TOOL_CHAIN)
+if(WCH_TOOL_CHAIN)      #沁恒提供的工具链
   # http://www.mounriver.com/download
   set(TOOLPATH
       /Users/kevin/Dev_tools/WCH/xpack-riscv-none-embed-gcc-8.2.0/bin/riscv-none-embed-
   )
-else()
+else()                  #通用开源工具链
   # https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases
   set(TOOLPATH
       /Users/kevin/Dev_tools/riscv-none-elf-gcc/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-
@@ -41,8 +41,13 @@ endif()
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
-# Step 2: 设置工程名称为"ch58x-ninja"
-set(TOP_PROJECT_NAME "ch58x-ble-uart")
+# remove last end of "/"
+string(REGEX REPLACE "/$" "" CURRENT_FOLDER_ABSOLUTE ${CMAKE_CURRENT_SOURCE_DIR})
+# get current relative dir name and set target name
+string(REGEX REPLACE ".*/(.*)" "\\1" CURRENT_FOLDER ${CURRENT_FOLDER_ABSOLUTE})
+# 设置工程名称为当前文件夹(编译的bin文件名称同此设定)
+set(TOP_PROJECT_NAME ${CURRENT_FOLDER})
+
 # 项目设置
 project(${TOP_PROJECT_NAME} C CXX ASM)
 set(CMAKE_CXX_STANDARD 11) # C++ 11
@@ -74,7 +79,7 @@ add_compile_options(
   # -Wcast-qual           # 被去掉cast限制警告
 )
 
-# Step 3: 设定编译类型 使用本命令查看是否包含debug符号 Linux : readelf -S Hexfile | grep debug
+# Step 2: 设定编译类型 使用本命令查看是否包含debug符号 Linux : readelf -S Hexfile | grep debug
 # MacOS : greadelf -S Hexfile | grep debug
 set(CMAKE_BUILD_TYPE "Debug")
 # SET(CMAKE_BUILD_TYPE "Release")
