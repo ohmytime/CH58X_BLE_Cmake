@@ -1,4 +1,5 @@
-# CH58X-CMake
+# CH58X-BLE_CMake
+基于沁恒的BLE/BLE_UART
 
 ## ⑴ 编译
 
