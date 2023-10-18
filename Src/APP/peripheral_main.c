@@ -66,6 +66,7 @@ int main(void)
     GAPRole_PeripheralInit();
     Peripheral_Init();
     app_uart_init();
+    HAL_LedInit();
     Main_Circulation();
 }
 
