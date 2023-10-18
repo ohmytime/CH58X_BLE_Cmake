@@ -5,12 +5,12 @@ cmake_minimum_required(VERSION 3.20)
 
 # Step 1: 工具链设置
 set(WCH_TOOL_CHAIN 1)
-if(WCH_TOOL_CHAIN)      #沁恒提供的工具链
+if(WCH_TOOL_CHAIN) # 沁恒提供的工具链
   # http://www.mounriver.com/download
   set(TOOLPATH
       /Users/kevin/Dev_tools/WCH/xpack-riscv-none-embed-gcc-8.2.0/bin/riscv-none-embed-
   )
-else()                  #通用开源工具链
+else() # 通用开源工具链
   # https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases
   set(TOOLPATH
       /Users/kevin/Dev_tools/riscv-none-elf-gcc/xpack-riscv-none-elf-gcc-12.3.0-1/bin/riscv-none-elf-
@@ -42,7 +42,8 @@ endif()
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
 # remove last end of "/"
-string(REGEX REPLACE "/$" "" CURRENT_FOLDER_ABSOLUTE ${CMAKE_CURRENT_SOURCE_DIR})
+string(REGEX REPLACE "/$" "" CURRENT_FOLDER_ABSOLUTE
+                     ${CMAKE_CURRENT_SOURCE_DIR})
 # get current relative dir name and set target name
 string(REGEX REPLACE ".*/(.*)" "\\1" CURRENT_FOLDER ${CURRENT_FOLDER_ABSOLUTE})
 # 设置工程名称为当前文件夹(编译的bin文件名称同此设定)
@@ -119,7 +120,7 @@ add_definitions(-DDEBUG=1)
 # 源码文件
 file(
   GLOB_RECURSE
-  SOURCES
+  my_sources
   "Dependency/Startup/*.S"
   "Dependency/USB_LIB/*.c"
   "Dependency/RVMSIS/*.c"
@@ -128,6 +129,17 @@ file(
   "Dependency/HAL/*.c"
   "Src/APP/*.c"
   "Src/Profile/*.c")
+
+# 不参与编译的文件
+file(
+  GLOB_RECURSE
+  my_exclude
+  "Src/APP/ble_uart_service/ble_uart_service_same_16bit_char.c"
+  "Src/APP/ble_uart_service/ble_uart_service_same_char.c"
+  "Src/APP/ble_uart_service/ble_uart_service.c")
+
+# 过滤文件
+list(REMOVE_ITEM my_sources ${my_exclude})
 
 # 链接参数
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/Dependency/Ld/Link.ld)
@@ -156,7 +168,7 @@ add_link_options(-T ${LINKER_SCRIPT})
 # link_libraries(m)            # -lm  添加方法1
 
 # 编译可执行文件
-add_executable(${PROJECT_NAME}.elf ${SOURCES} ${LINKER_SCRIPT})
+add_executable(${PROJECT_NAME}.elf ${my_sources} ${LINKER_SCRIPT})
 
 # ---------------------------- 链接私有库 ----------------------------
 # 用在add_executable之后
