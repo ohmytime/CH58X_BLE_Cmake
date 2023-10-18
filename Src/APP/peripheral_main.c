@@ -17,6 +17,7 @@
 #include "gattprofile.h"
 #include "peripheral.h"
 #include "app_uart.h"
+#include "app_user_task.h"
 
 /*********************************************************************
  * GLOBAL TYPEDEFS
@@ -66,6 +67,7 @@ int main(void)
     GAPRole_PeripheralInit();
     Peripheral_Init();
     app_uart_init();
+    TMOS_Keypad_init();
     HAL_LedInit();
     Main_Circulation();
 }

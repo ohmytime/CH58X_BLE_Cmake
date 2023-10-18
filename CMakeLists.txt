@@ -112,6 +112,7 @@ include_directories(
   Src/APP/app_drv_fifo
   Src/APP/ble_uart_service
   Src/APP/include
+  Src/APP/user_task
   Src/Profile/include)
 
 # 用户宏定义

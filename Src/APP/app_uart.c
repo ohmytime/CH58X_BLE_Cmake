@@ -18,6 +18,7 @@
 #include "gattprofile.h"
 #include "peripheral.h"
 #include "app_uart.h"
+#include "app_user_task.h"
 
 /*********************************************************************
  * MACROS
@@ -212,6 +213,7 @@ void on_bleuartServiceEvt(uint16_t connection_handle, ble_uart_evt_t *p_evt)
             break;
         case BLE_UART_EVT_BLE_DATA_RECIEVED:
             PRINT("BLE RX DATA len:%d\r\n", p_evt->data.length);
+            PRINT("BLE RX DATA :%s\r\n", p_evt->data.p_data);
 
             //for notify back test
             //to ble
@@ -222,7 +224,7 @@ void on_bleuartServiceEvt(uint16_t connection_handle, ble_uart_evt_t *p_evt)
 
             //ble to uart
             app_uart_tx_data((uint8_t *)p_evt->data.p_data, p_evt->data.length);
-
+            PROCESS_BLE_DATA_HANDLE((uint8_t *)p_evt->data.p_data, p_evt->data.length);
             break;
         default:
             break;
